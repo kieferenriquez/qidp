@@ -14,7 +14,14 @@ import {
   ApiAnalyzeExpenseResponse,
 } from "amazon-textract-response-parser";
 
-function Payables({ secrets }) {
+interface PayablesPageProps {
+  secrets: {
+    id: string;
+    key: string;
+  };
+}
+
+function Payables({ secrets }: PayablesPageProps) {
   const textractClient = new TextractClient({
     region: "ap-southeast-2",
     credentials: {
@@ -64,7 +71,7 @@ function Payables({ secrets }) {
     const reader = new FileReader();
 
     reader.onload = async function () {
-      const fileBytes = new Uint8Array(reader.result);
+      const fileBytes = new Uint8Array(reader.result as ArrayBuffer);
 
       const textractResponse = await textractClient.send(
         new AnalyzeExpenseCommand({
@@ -99,7 +106,7 @@ function Payables({ secrets }) {
               <input
                 id="myInput"
                 type="file"
-                onChange={onChangeFile.bind(this)}
+                onChange={onChangeFile}
               />
             </form>
           </View>
