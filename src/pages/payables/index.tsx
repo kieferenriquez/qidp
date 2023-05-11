@@ -2,9 +2,9 @@ import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import { Grid, View } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { API, Storage } from "aws-amplify";
-import { createExpenseImage } from "@/graphql/mutations";
-import config from "../../aws-exports";
+// import { API, Storage } from "aws-amplify";
+// import { createExpenseImage } from "@/graphql/mutations";
+// import config from "../../aws-exports";
 import {
   TextractClient,
   AnalyzeExpenseCommand,
@@ -31,29 +31,29 @@ function Payables({ secrets }) {
 
     // Upload to S3
     // ** Random name for now
-    const uploadedImageFile = await Storage.put(imageFile.name, imageFile);
+    // const uploadedImageFile = await Storage.put(imageFile.name, imageFile);
 
     // Update Graphql
-    try {
-      const newExpenseImage = await API.graphql({
-        query: createExpenseImage,
-        variables: {
-          input: {
-            name: imageFile.name,
-            userId: "ssss",
-            image: {
-              region: config.aws_user_files_s3_bucket_region,
-              bucket: config.aws_user_files_s3_bucket,
-              key: uploadedImageFile.key,
-            },
-          },
-        },
-      });
+    // try {
+    //   const newExpenseImage = await API.graphql({
+    //     query: createExpenseImage,
+    //     variables: {
+    //       input: {
+    //         name: imageFile.name,
+    //         userId: "ssss",
+    //         image: {
+    //           region: config.aws_user_files_s3_bucket_region,
+    //           bucket: config.aws_user_files_s3_bucket,
+    //           key: uploadedImageFile.key,
+    //         },
+    //       },
+    //     },
+    //   });
 
-      console.log("Success Graphql", newExpenseImage);
-    } catch (e) {
-      console.log("Error Graphql", e);
-    }
+    //   console.log("Success Graphql", newExpenseImage);
+    // } catch (e) {
+    //   console.log("Error Graphql", e);
+    // }
 
     // Call Textract
     callTextract(imageFile);
